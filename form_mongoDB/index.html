@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">  
+    <form id="contact" action="http://localhost:8080/index_form" method="post">
+      <h3>This Font Has Changed.</h3>
+      <h4>Color of this Text has Changed</h4>      
+        <input id="name" placeholder="Your name" type="text" name="name">      
+        <input placeholder="email@domain.tld" type="email"  name="_replyto">      
+        <textarea placeholder="Type your Message Here...." name="message"></textarea>
+        <button id="my-form-button" type="submit">Submit</button>
+      <p id="my-form-status"></p>
+    </form>
+  </div>
+  <script>
+    window.addEventListener("DOMContentLoaded", function() {
+  
+      // get the form elements defined in your form HTML above
+      
+      var form = document.getElementById("contact");
+      var button = document.getElementById("my-form-button");
+      var status = document.getElementById("my-form-status");
+  
+      // Success and Error functions for after the form is submitted
+      
+      function success() {
+        form.reset();
+        button.style = "display: none ";
+        status.innerHTML = "Thanks!";
+      }
+  
+      function error() {
+        status.innerHTML = "Oops! There was a problem.";
+      }
+  
+      // handle the form submission event
+  
+      form.addEventListener("submit", function(ev) {
+        ev.preventDefault();
+        var data = new FormData(form);
+        ajax(form.method, form.action, data, success, error);
+      });
+    });
+    
+    // helper function for sending an AJAX request
+  
+    function ajax(method, url, data, success, error) {
+      var xhr = new XMLHttpRequest();
+      xhr.open(method, url);
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState !== XMLHttpRequest.DONE) return;
+        if (xhr.status === 200) {
+          success(xhr.response, xhr.responseType);
+        } else {
+          error(xhr.status, xhr.response, xhr.responseType);
+        }
+      };
+      xhr.send(data);
+    }
+  </script>
+</body>
+</html>
